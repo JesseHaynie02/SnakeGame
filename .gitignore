@@ -16,14 +16,7 @@
 *.gch
 *.pch
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
 # Shared objects (inc. Windows DLLs)
-*.dll
 *.so
 *.so.*
 *.dylib
@@ -41,6 +34,13 @@
 *.su
 *.idb
 *.pdb
+
+# Ignore .clang-format file
+.clang-format
+
+.vscode/
+
+highscore.txt
 
 # Kernel Module Compile Results
 *.mod*
