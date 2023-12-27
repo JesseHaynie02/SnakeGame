@@ -509,7 +509,7 @@ int16_t restart_game(SDL_Renderer** renderer_ptr, int16_t* const last_key_presse
 
     latest_score = snake_size();
 
-    fp = fopen("highscore.txt", "a+");
+    fp = fopen("highscore.txt", "r+");
     if(fp == NULL) {
         printf("Failed to open highscore.txt\n");
         return 1;

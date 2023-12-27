@@ -40,8 +40,6 @@
 
 .vscode/
 
-highscore.txt
-
 # Kernel Module Compile Results
 *.mod*
 *.cmd

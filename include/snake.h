@@ -50,12 +50,11 @@
 #define RIGHT_ARROW_KEY 79
 #define ENTER_KEY       40
 #define ESCAPE_KEY      41
-#define GAME_DELAY      100
+#define GAME_DELAY      95
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
 
 /**
  * @brief snake_segment is a struct that is used in a doubly linked list
