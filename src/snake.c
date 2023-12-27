@@ -1,21 +1,16 @@
 #include "snake.h"
 
-/**
- * TODO:
- * push to GitHub
-*/
-
 int main(int argc, char* argv[]) {
-    uint16_t x = (SCREEN_WIDTH / 2), y = (SCREEN_HEIGHT / 2), running = 1, last_key_pressed = 0, startup = 1, restart_flag = 0;
-    uint16_t redx = 0, redy = 0, highscore = 0;
-    uint16_t* const redx_ptr = &redx;
-    uint16_t* const redy_ptr = &redy;
-    uint16_t* const last_key_pressed_ptr = &last_key_pressed;
+    int16_t x = (SCREEN_WIDTH / 2), y = (SCREEN_HEIGHT / 2), running = 1, last_key_pressed = 0, startup = 1, restart_flag = 0;
+    int16_t redx = 0, redy = 0, highscore = 0;
+    int16_t* const redx_ptr = &redx;
+    int16_t* const redy_ptr = &redy;
+    int16_t* const last_key_pressed_ptr = &last_key_pressed;
 
     insert_tail(x, y);
 
-    uint16_t* const x_ptr = &head->x;
-    uint16_t* const y_ptr = &head->y;
+    int16_t* const x_ptr = &head->x;
+    int16_t* const y_ptr = &head->y;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Error: SDL failed to initialize\nSDL Error: '%s'\n", SDL_GetError());
@@ -64,8 +59,8 @@ int main(int argc, char* argv[]) {
     }
 
     SDL_Texture* text_image_one = SDL_CreateTextureFromSurface(renderer, solid_one);
-    uint16_t alignment_x = (SCREEN_WIDTH - solid_one->w) / 2;
-    uint16_t alignment_y = (SCREEN_HEIGHT - solid_one->h) / 4;
+    int16_t alignment_x = (SCREEN_WIDTH - solid_one->w) / 2;
+    int16_t alignment_y = (SCREEN_HEIGHT - solid_one->h) / 4;
     SDL_Rect pos_one = {alignment_x, alignment_y, solid_one->w, solid_one->h};
     SDL_FreeSurface(solid_one);
 
@@ -124,9 +119,9 @@ int main(int argc, char* argv[]) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_KEYDOWN:
-                    if (event.key.keysym.scancode == UP_ARROW_KEY || event.key.keysym.scancode == DOWN_ARROW_KEY ||
-                        event.key.keysym.scancode == LEFT_ARROW_KEY || event.key.keysym.scancode == RIGHT_ARROW_KEY) {
-                        if (head->y > 0 && head->y < SCREEN_HEIGHT && head->x > 0 && head->x < SCREEN_WIDTH) {
+                    if ((event.key.keysym.scancode == UP_ARROW_KEY) || (event.key.keysym.scancode == DOWN_ARROW_KEY) ||
+                        (event.key.keysym.scancode == LEFT_ARROW_KEY) || (event.key.keysym.scancode == RIGHT_ARROW_KEY)) {
+                        if ((head->y >= 0) && (head->y < SCREEN_HEIGHT)  && (head->x >= 0) && (head->x < SCREEN_WIDTH)) {
                             last_key_pressed = event.key.keysym.scancode;
                         } else {
                             restart_flag = 1;
@@ -190,7 +185,7 @@ int main(int argc, char* argv[]) {
 
         switch (last_key_pressed) {
             case UP_ARROW_KEY:
-                if (head->y > 0) {
+                if (head->y >= 0) {
                     move_snake(renderer_ptr);
                 } else {
                     restart_flag = 1;
@@ -206,7 +201,7 @@ int main(int argc, char* argv[]) {
                 head->y += 10;
                 break;
             case LEFT_ARROW_KEY:
-                if (head->x > 0) {
+                if (head->x >= 0) {
                     move_snake(renderer_ptr);
                 } else {
                     restart_flag = 1;
@@ -226,7 +221,7 @@ int main(int argc, char* argv[]) {
         }
 
         if (restart_flag) {
-            uint16_t latest_score = 0;
+            int16_t latest_score = 0;
             char latest_score_str[50] = "", highscore_str[50] = "", current_score[50] = "", high_score[50] = "";
 
             latest_score = snake_size();
@@ -338,12 +333,14 @@ int main(int argc, char* argv[]) {
         SDL_Rect redCube = {redx, redy, 10, 10};
         SDL_RenderFillRect(renderer, &redCube);
 
-        uint16_t check = check_for_collision();
+        int16_t check = check_for_collision();
         if (check) {
             restart_flag = 1;
         }
 
         SDL_RenderPresent(renderer);
+
+        // printf("head->x = %d head->y = %d\n", head->x, head->y);
 
         clock_t start_time = clock();
         while (clock() < start_time + GAME_DELAY) {
@@ -356,7 +353,7 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-snake_segment* create(uint16_t x, uint16_t y) {
+snake_segment* create(int16_t x, int16_t y) {
     snake_segment* new_segment = (snake_segment*) malloc(sizeof(snake_segment));
     if (new_segment == NULL) {
         printf("Error allocating memory for new snake segment\n");
@@ -371,7 +368,7 @@ snake_segment* create(uint16_t x, uint16_t y) {
     return new_segment;
 }
 
-void insert_tail(uint16_t x, uint16_t y) {
+void insert_tail(int16_t x, int16_t y) {
     snake_segment* new_segment = create(x, y);
 
     if (new_segment != NULL) {
@@ -390,9 +387,9 @@ void insert_tail(uint16_t x, uint16_t y) {
     }
 }
 
-uint16_t snake_size() {
+int16_t snake_size() {
     snake_segment* temp = head;
-    uint16_t count = 1;
+    int16_t count = 1;
 
     if (head == NULL) {
         return 0;
@@ -424,7 +421,7 @@ void delete_snake() {
     tail = NULL;
 }
 
-void gen_random_red_cube(uint16_t* const redx_ptr, uint16_t* const redy_ptr) {
+void gen_random_red_cube(int16_t* const redx_ptr, int16_t* const redy_ptr) {
     srand(time(NULL));
 
     *redx_ptr = (rand() % (SCREEN_WIDTH / 10)) * 10;
@@ -437,7 +434,7 @@ void gen_random_red_cube(uint16_t* const redx_ptr, uint16_t* const redy_ptr) {
 
 void move_snake(SDL_Renderer** renderer_ptr) {
     snake_segment* temp = head;
-    uint16_t tempx_1 = temp->x, tempy_1 = temp->y, tempx_2 = 0, tempy_2 = 0;
+    int16_t tempx_1 = temp->x, tempy_1 = temp->y, tempx_2 = 0, tempy_2 = 0;
 
     if (head == NULL) {
         printf("Error: Snake is null\n");
@@ -457,7 +454,7 @@ void move_snake(SDL_Renderer** renderer_ptr) {
     }
 }
 
-uint16_t check_for_collision() {
+int16_t check_for_collision() {
     snake_segment* temp = head;
 
     if (head == NULL) {
@@ -475,7 +472,7 @@ uint16_t check_for_collision() {
     return 0;
 }
 
-uint16_t check_red_cube_valid(uint16_t* const redx_ptr, uint16_t* const redy_ptr) {
+int16_t check_red_cube_valid(int16_t* const redx_ptr, int16_t* const redy_ptr) {
     snake_segment* temp = head;
 
     if (head == NULL) {
@@ -506,9 +503,9 @@ void render_snake(SDL_Renderer** renderer_ptr) {
     }
 }
 
-uint16_t restart_game(SDL_Renderer** renderer_ptr, uint16_t* const last_key_pressed_ptr, uint16_t* const x_ptr, uint16_t* const y_ptr, uint16_t* const redx_ptr, uint16_t* const redy_ptr) {
+int16_t restart_game(SDL_Renderer** renderer_ptr, int16_t* const last_key_pressed_ptr, int16_t* const x_ptr, int16_t* const y_ptr, int16_t* const redx_ptr, int16_t* const redy_ptr) {
     FILE* fp;
-    uint16_t latest_score = 0, highscore = 0;
+    int16_t latest_score = 0, highscore = 0;
 
     latest_score = snake_size();
 

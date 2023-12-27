@@ -64,8 +64,8 @@ extern "C" {
  * next and previous body segment.
  */
 typedef struct snake_segment {
-    uint16_t x;     /**< The x coordinate of the snake segment */
-    uint16_t y;     /**< The y coordinate of the snake segment */
+    int16_t x;     /**< The x coordinate of the snake segment */
+    int16_t y;     /**< The y coordinate of the snake segment */
     struct snake_segment* next;     /**< The pointer that holds the location of the next snake segment */
     struct snake_segment* prev;     /**< The pointer that holds the location of the previous snake segment */
 } snake_segment;
@@ -83,7 +83,7 @@ snake_segment* tail = NULL;     /**< tail pointer holds the location of the tail
  * @param y The y coordinate of the snake segment.
  * @return This function returns the snake segment that was created.
  */
-snake_segment* create(uint16_t x, uint16_t y);
+snake_segment* create(int16_t x, int16_t y);
 
 /**
  * @brief This function inserts a newly created snake segment and inserts at the tail of the list.
@@ -97,7 +97,7 @@ snake_segment* create(uint16_t x, uint16_t y);
  * @param y The y coordinate of the snake segment.
  * @return This function return is void.
  */
-void insert_tail(uint16_t x, uint16_t y);
+void insert_tail(int16_t x, int16_t y);
 
 /**
  * @brief This function returns the size of the snake that is a doubly linked list.
@@ -107,7 +107,7 @@ void insert_tail(uint16_t x, uint16_t y);
  * 
  * @return This function return the size of the doubly linked list aka the snake as an integer.
  */
-uint16_t snake_size();
+int16_t snake_size();
 
 /**
  * @brief This function deallocates/deletes the memory used for the snake list.
@@ -129,7 +129,7 @@ void delete_snake();
  * @param redy_ptr The y coordinate of the red cube.
  * @return This function return is void.
  */
-void gen_random_red_cube(uint16_t* const redx_ptr, uint16_t* const redy_ptr);
+void gen_random_red_cube(int16_t* const redx_ptr, int16_t* const redy_ptr);
 
 /**
  * @brief This function moves the snake to its updated position.
@@ -150,7 +150,7 @@ void move_snake(SDL_Renderer** renderer_ptr);
  * 
  * @return This function returns a 1 when a collision is detected, otherwise 0.
  */
-uint16_t check_for_collision();
+int16_t check_for_collision();
 
 /**
  * @brief This function checks to see if a newly generated red cube did not generate on the snakebody.
@@ -162,7 +162,7 @@ uint16_t check_for_collision();
  * @param redy_ptr The y coordinate of the red cube.
  * @return This function returns a 0 when the red cube is not valid and 1 when the red cube is valid.
  */
-uint16_t check_red_cube_valid(uint16_t* const redx_ptr, uint16_t* const redy_ptr);
+int16_t check_red_cube_valid(int16_t* const redx_ptr, int16_t* const redy_ptr);
 
 /**
  * @brief This function renders and outputs the snake onto the screen.
@@ -188,7 +188,7 @@ void render_snake(SDL_Renderer** renderer_ptr);
  * @param redy_ptr The y coordinate of the red cube.
  * @return This function returns the newest highscore.
  */
-uint16_t restart_game(SDL_Renderer** renderer_ptr, uint16_t* const last_key_pressed_ptr, uint16_t* const x_ptr, uint16_t* const y_ptr, uint16_t* const redx_ptr, uint16_t* const redy_ptr);
+int16_t restart_game(SDL_Renderer** renderer_ptr, int16_t* const last_key_pressed_ptr, int16_t* const x_ptr, int16_t* const y_ptr, int16_t* const redx_ptr, int16_t* const redy_ptr);
 
 #ifdef __cplusplus
 }
