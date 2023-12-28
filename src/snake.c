@@ -6,6 +6,7 @@ int main(int argc, char* argv[]) {
     int16_t* const redx_ptr = &redx;
     int16_t* const redy_ptr = &redy;
     int16_t* const last_key_pressed_ptr = &last_key_pressed;
+    clock_t start_time = 0;
 
     insert_tail(x, y);
 
@@ -325,26 +326,22 @@ int main(int argc, char* argv[]) {
                 SDL_RenderPresent(renderer);
             }   
         }
+        
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-
         render_snake(renderer_ptr);
-
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_Rect redCube = {redx, redy, 10, 10};
-        SDL_RenderFillRect(renderer, &redCube);
 
         int16_t check = check_for_collision();
         if (check) {
             restart_flag = 1;
         }
 
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_Rect redCube = {redx, redy, 10, 10};
+        SDL_RenderFillRect(renderer, &redCube);
+
         SDL_RenderPresent(renderer);
-
-        // printf("head->x = %d head->y = %d\n", head->x, head->y);
-
-        clock_t start_time = clock();
-        while (clock() < start_time + GAME_DELAY) {
-        }
+        start_time = clock();
+        while (clock() < start_time + GAME_DELAY) {}
     }
 
     TTF_Quit();
@@ -428,6 +425,7 @@ void gen_random_red_cube(int16_t* const redx_ptr, int16_t* const redy_ptr) {
     *redy_ptr = (rand() % (SCREEN_HEIGHT / 10)) * 10;
 
     while (check_red_cube_valid(redx_ptr, redy_ptr) == 0) {
+        printf("invalid cube\n");
         gen_random_red_cube(redx_ptr, redy_ptr);
     }
 }
@@ -497,6 +495,7 @@ void render_snake(SDL_Renderer** renderer_ptr) {
     }
 
     for (uint8_t i = 0; i < snake_size(); ++i) {
+        // printf("temp->x = %d temp->y = %d\n", temp->x, temp->y);
         SDL_Rect rect = {temp->x, temp->y, 10, 10};
         SDL_RenderFillRect(*renderer_ptr, &rect);
         temp = temp->next;
